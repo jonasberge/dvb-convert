@@ -52,7 +52,7 @@ set -x
 mkdir -p "$OUT_DIR"
 mkdir -p "$CONV_DIR"
 
-for FILE_VID in $IN_DIR/**/*.$VID_EXT; do
+for FILE_VID in "$IN_DIR"/**/*."$VID_EXT"; do
     DIR=$(dirname "$FILE_VID")
     FOLDER="${DIR#$IN_DIR/}"
     BASE=$(basename "$FILE_VID" $VID_EXT)
