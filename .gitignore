@@ -5,6 +5,7 @@
 *.mpa
 
 .DS_Store
+.env
 
 in
 input
