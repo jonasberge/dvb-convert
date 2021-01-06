@@ -18,6 +18,8 @@ install: $(PROJX_JAR)
 	rm -f $(PROJX_ZIP)
 
 check:
+	java -version
+	java -jar $(PROJX_JAR) '-?'
 	ffmpeg -version
 	mkisofs --version
 	wget --version
