@@ -4,6 +4,8 @@
 *.mp2
 *.mpa
 
+.DS_Store
+
 in
 input
 out
