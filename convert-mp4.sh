@@ -38,6 +38,10 @@ function convert {
         | filter_convert_out_file
 }
 
+function sanitize {
+    echo "$@" | sed -e 's/[^A-Za-z0-9._-]/_/g'
+}
+
 function clear {
     rm -rf $OUT_DIR/{*,.*}
 }
@@ -66,15 +70,21 @@ for FILE_VID in $IN_DIR/**/*.$VID_EXT; do
         BASE="${BASE:$STRIP_LEN}"
     fi
 
+    BASE_SAN=$(sanitize $BASE)
+
     # remux files to something usable
     CONV_SUB_DIR="$CONV_DIR/$FOLDER"
     mkdir -p "$CONV_SUB_DIR"
-    RES_FILES=$(convert -out "$CONV_SUB_DIR" "$FILE_VID" "$FILE_AUD")
+    RES_FILES=$(convert -out "$CONV_SUB_DIR" -name "$BASE_SAN" "$FILE_VID" "$FILE_AUD")
 
     IFS=$'\n' read -rd '' -a RES_FILES <<<"$RES_FILES"
     RES_VID="${RES_FILES[0]}"
     RES_AUD="${RES_FILES[1]}"
 
+    FFMPEG_OUT="$OUT_DIR/$BASE.mp4"
+    FFMPEG_OUT_SAN="$OUT_DIR/$BASE_SAN.mp4"
+
     # combine to mp4
-    ffmpeg -y -i "$RES_VID" -i "$RES_AUD" -c:v libx264 "$OUT_DIR/$BASE.mp4"
+    ffmpeg -y -i "$RES_VID" -i "$RES_AUD" -c:v libx264 "$FFMPEG_OUT_SAN"
+    mv "$FFMPEG_OUT_SAN" "$FFMPEG_OUT"
 done
