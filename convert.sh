@@ -51,10 +51,11 @@ for FILE_VID in $IN_DIR/*.$VID_EXT; do
         # combine audio and video
         RES_PAL="$OUT_DIR/${BASE}.pal.mpg"
         ffmpeg -i "$RES_VID" -i "$RES_AUD" -shortest -target pal-dvd "$RES_PAL"
-        
+
         # create dvd directory structure
         DVDAUTH_DIR="$DVD_DIR/$BASE"
         mkdir "$DVDAUTH_DIR"
+        export VIDEO_FORMAT=PAL
         dvdauthor -o "$DVDAUTH_DIR" -t "$RES_PAL"
         dvdauthor -o "$DVDAUTH_DIR" -T
 
