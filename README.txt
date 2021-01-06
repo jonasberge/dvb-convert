@@ -1,4 +1,4 @@
-$ brew install ffmpeg dvdauthor
+$ brew install ffmpeg dvdauthor dvdrtools
 $ make install
 $ ./convert.sh
 
