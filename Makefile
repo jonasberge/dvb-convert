@@ -20,6 +20,7 @@ install: $(PROJX_JAR)
 check:
 	ffmpeg -version
 	mkisofs --version
+	wget --version
 	which dvdauthor
 
 clean:
