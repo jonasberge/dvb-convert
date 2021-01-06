@@ -43,7 +43,7 @@ function sanitize {
 }
 
 function clear {
-    rm -rf $OUT_DIR/{*,.*}
+    rm -rf $OUT_DIR/*
 }
 
 clear
