@@ -4,6 +4,8 @@ PROJX_ZIP_URL=https://sourceforge.net/projects/project-x/files/project-x/Project
 PROJX_ZIP=$(PROJX_NAM).zip
 PROJX_JAR=$(PROJX_DIR)/ProjectX.jar
 
+all: convert
+
 $(PROJX_ZIP):
 	wget -O $(PROJX_ZIP) $(PROJX_ZIP_URL)
 
@@ -28,4 +30,7 @@ check:
 clean:
 	rm -rf $(PROJX_DIR)
 
-.PHONY: install
+convert:
+	bash ./convert-mp4.sh
+
+.PHONY: install check clean convert all
