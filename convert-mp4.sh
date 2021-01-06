@@ -55,6 +55,7 @@ mkdir -p "$CONV_DIR"
 for FILE_VID in "$IN_DIR"/**/*."$VID_EXT"; do
     DIR=$(dirname "$FILE_VID")
     FOLDER="${DIR#$IN_DIR/}"
+    FOLDER=$(sanitize "$FOLDER")
     BASE=$(basename "$FILE_VID" $VID_EXT)
     BASE="${BASE%.*}"
     FILE_AUD="$DIR/$BASE.$AUD_EXT"
@@ -70,7 +71,7 @@ for FILE_VID in "$IN_DIR"/**/*."$VID_EXT"; do
         BASE="${BASE:$STRIP_LEN}"
     fi
 
-    BASE_SAN=$(sanitize $BASE)
+    BASE_SAN=$(sanitize "$BASE")
 
     # remux files to something usable
     CONV_SUB_DIR="$CONV_DIR/$FOLDER"
