@@ -17,6 +17,11 @@ $(PROJX_JAR): $(PROJX_DIR)
 install: $(PROJX_JAR)
 	rm -f $(PROJX_ZIP)
 
+check:
+	ffmpeg -version
+	mkisofs --version
+	which dvdauthor
+
 clean:
 	rm -rf $(PROJX_DIR)
 
