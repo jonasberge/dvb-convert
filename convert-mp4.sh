@@ -55,7 +55,6 @@ mkdir -p "$CONV_DIR"
 for FILE_VID in "$IN_DIR"/**/*."$VID_EXT"; do
     DIR=$(dirname "$FILE_VID")
     FOLDER="${DIR#$IN_DIR/}"
-    FOLDER=$(sanitize "$FOLDER")
     BASE=$(basename "$FILE_VID" $VID_EXT)
     BASE="${BASE%.*}"
     FILE_AUD="$DIR/$BASE.$AUD_EXT"
@@ -67,23 +66,25 @@ for FILE_VID in "$IN_DIR"/**/*."$VID_EXT"; do
 
     # strip prefix if name is long enough
     # used to remove the timestamp prefix of receiver recordings
-    if [ ${#BASE} -gt $STRIP_LEN ]; then
-        BASE="${BASE:$STRIP_LEN}"
+    if [ ${#FOLDER} -gt $STRIP_LEN ]; then
+        FOLDER="${FOLDER:$STRIP_LEN}"
     fi
 
-    BASE_SAN=$(sanitize "$BASE")
+    # BASE_SAN=$(sanitize "$BASE")
+
+    FOLDER_SAN=$(sanitize "$FOLDER")
 
     # remux files to something usable
-    CONV_SUB_DIR="$CONV_DIR/$FOLDER"
+    CONV_SUB_DIR="$CONV_DIR/$FOLDER_SAN"
     mkdir -p "$CONV_SUB_DIR"
-    RES_FILES=$(convert -out "$CONV_SUB_DIR" -name "$BASE_SAN" "$FILE_VID" "$FILE_AUD")
+    RES_FILES=$(convert -out "$CONV_SUB_DIR" -name "$FOLDER_SAN" "$FILE_VID" "$FILE_AUD")
 
     IFS=$'\n' read -rd '' -a RES_FILES <<<"$RES_FILES"
     RES_VID="${RES_FILES[0]}"
     RES_AUD="${RES_FILES[1]}"
 
-    FFMPEG_OUT="$OUT_DIR/$BASE.mp4"
-    FFMPEG_OUT_SAN="$OUT_DIR/$BASE_SAN.mp4"
+    FFMPEG_OUT="$OUT_DIR/$FOLDER.mp4"
+    FFMPEG_OUT_SAN="$OUT_DIR/$FOLDER_SAN.mp4"
 
     # combine to mp4
     ffmpeg -y -i "$RES_VID" -i "$RES_AUD" -c:v libx264 "$FFMPEG_OUT_SAN"
